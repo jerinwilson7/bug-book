@@ -1,11 +1,22 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    experimental:{
-        staleTimes:{
-            dynamic:30
-        },
+    experimental: {
+      staleTime: {
+        dynamic: 30,
+      },
     },
-    serverExternalPackages:["@node-rs/argon2"]
-};
-
-export default nextConfig;
+    webpack: (config, { isServer }) => {
+      if (isServer) {
+        // Exclude the native modules from the Webpack bundle
+        config.externals = [
+          ...config.externals,
+          '@node-rs/argon2'
+        ];
+      }
+  
+      return config;
+    },
+  };
+  
+  export default nextConfig;
+  
