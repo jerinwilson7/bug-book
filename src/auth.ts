@@ -44,6 +44,8 @@ export const validateRequest = cache(
     { user: User; session: Session } | { user: null; session: null }
   > => {
     const sessionId = cookies().get(lucia.sessionCookieName)?.value ?? null;
+    console.log("sesID :",sessionId);
+    
 
     if(!sessionId){
         return {
@@ -72,7 +74,10 @@ export const validateRequest = cache(
                 sessionCookie.attributes
             )
         }
-    } catch {}
+    } catch(error) {
+      console.log('err :',error);
+      
+    }
 
     return result;
   },
