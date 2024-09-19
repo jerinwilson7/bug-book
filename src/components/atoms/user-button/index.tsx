@@ -1,12 +1,14 @@
 "use client";
 
 import { logout } from "@/app/(auth)/actions";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuSub, DropdownMenuSubContent, DropdownMenuSubTrigger, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
 import { useSession } from "@/providers";
-import { LogOutIcon, UserIcon } from "lucide-react";
+import { Check, LogOutIcon, Monitor, Moon, Sun, UserIcon } from "lucide-react";
 import Link from "next/link";
 import { UserAvatar } from "../user-avatar";
+import { useTheme } from "next-themes";
+import { DropdownMenuPortal } from "@radix-ui/react-dropdown-menu";
 
 
 interface UserButtonProps {
@@ -15,7 +17,7 @@ interface UserButtonProps {
 
 export  const UserButton = ({ className }: UserButtonProps) => {
   const { user } = useSession();
-
+  const {setTheme,theme} = useTheme()
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -32,6 +34,31 @@ export  const UserButton = ({ className }: UserButtonProps) => {
             Profile
           </DropdownMenuItem>
         </Link>
+        <DropdownMenuSub>
+            <DropdownMenuSubTrigger>
+                <Monitor className="mr-2 size-4"/>
+                Theme
+            </DropdownMenuSubTrigger>
+            <DropdownMenuPortal>
+                <DropdownMenuSubContent>
+                    <DropdownMenuItem onClick={()=>setTheme('system')}>
+                        <Monitor className="mr-2 size-4"/>
+                        System default
+                        {theme === "system" && <Check className="ms-2 size-4"/>}
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={()=>setTheme('light')}>
+                        <Sun className="mr-2 size-4"/>
+                        Light
+                        {theme === "light" && <Check className="ms-2 size-4"/>}
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={()=>setTheme('dark')}>
+                        <Moon className="mr-2 size-4"/>
+                        dark
+                        {theme === "dark" && <Check className="ms-2 size-4"/>}
+                    </DropdownMenuItem>
+                </DropdownMenuSubContent>
+            </DropdownMenuPortal>
+        </DropdownMenuSub>
         <DropdownMenuSeparator />
         <DropdownMenuItem
           onClick={() => {
